@@ -1,0 +1,9 @@
+.set{
+    margin-top: 15rem;
+    text-align: center;
+}
+.set button{
+    width: 10rem;
+    height: 10rem;
+    font-size: 5rem;
+}
