@@ -59,7 +59,7 @@ var ctx = canvas.getContext("2d");
      requestAnimationFrame(animate);
      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-     // Rysowanie linii pomiędzy kulkami
+    
      for (var i = 0; i < balls.length; i++) {
         for (var j = i + 1; j < balls.length; j++) {
             var distance = Math.sqrt(Math.pow(balls[i].x - balls[j].x, 2) + Math.pow(balls[i].y - balls[j].y, 2));
