@@ -1,94 +1,83 @@
-const canvas = document.getElementById("myCanvas");
-const ctx = canvas.getContext("2d");
-const ballCounterParagraph = document.getElementById("ballCounterParagraph");
-let balls = [];
-let numBalls = 10;
-let distance = 50;
-let isRunning = false;
+ // Pobieranie canvas
+ var canvas = document.getElementById("canvas");
+ var ctx = canvas.getContext("2d");
 
+ // Ustawienie wielkości canvas
+ canvas.width = 800;
+ canvas.height = 600;
 
-function start() {
-  if (isRunning) {
-    return;
-  }
-  isRunning = true;
+ // Tablica kulek
+ var balls = [];
+ var numBalls = 50;
+ var lineLength = 80;
 
-  // Kulki
-  for (let i = 0; i < numBalls; i++) {
-    balls.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      dx: Math.random() * 2 - 1,
-      dy: Math.random() * 2 - 1,
-    });
-  }
+ // Klasa kulki
+ class Ball {
+     constructor(x, y, vx, vy, radius) {
+         this.x = x;
+         this.y = y;
+         this.vx = vx;
+         this.vy = vy;
+         this.radius = radius;
+     }
 
-  requestAnimationFrame(animate);
+     // Rysowanie kulki
+     draw() {
+         ctx.beginPath();
+         ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+         ctx.fillStyle = "blue";
+         ctx.fill();
+         ctx.closePath();
+     }
 
-  ballCounter();
-}
+     // Aktualizowanie pozycji kulki
+     update() {
+         this.x += this.vx;
+         this.y += this.vy;
 
-function animate() {
+         // Odbijanie się od krawędzi
+         if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
+             this.vx = -this.vx;
+         }
+         if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+             this.vy = -this.vy;
+         }
+     }
+ }
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+ // Tworzenie kulek
+ for (var i = 0; i < numBalls; i++) {
+     var x = Math.random() * canvas.width;
+     var y = Math.random() * canvas.height;
+     var vx = (Math.random() - 0.5) * 10;
+     var vy = (Math.random() - 0.5) * 10;
+     var radius = 20;
+     balls.push(new Ball(x, y, vx, vy, radius));
+ }
 
-  // Kulki
-  for (let i = 0; i < balls.length; i++) {
-    const ball = balls[i];
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, 5, 0, Math.PI * 2);
-    ctx.fillStyle = "black";
-    ctx.fill();
+ // Pętla animacji
+ function animate() {
+     requestAnimationFrame(animate);
+     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Odległości
-    for (let j = i + 1; j < balls.length; j++) {
-      const otherBall = balls[j];
-      const dx = ball.x - otherBall.x;
-      const dy = ball.y - otherBall.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-
-      // Linie
-      if (dist < distance) {
-        ctx.beginPath();
-        ctx.moveTo(ball.x, ball.y);
-        ctx.lineTo(otherBall.x, otherBall.y);
-        ctx.strokeStyle = "gray";
-        ctx.stroke();
-      }
+     // Rysowanie linii pomiędzy kulkami
+     for (var i = 0; i < balls.length; i++) {
+        for (var j = i + 1; j < balls.length; j++) {
+            var distance = Math.sqrt(Math.pow(balls[i].x - balls[j].x, 2) + Math.pow(balls[i].y - balls[j].y, 2));
+            if (distance < lineLength) {
+            ctx.beginPath();
+            ctx.moveTo(balls[i].x, balls[i].y);
+            ctx.lineTo(balls[j].x, balls[j].y);
+            ctx.strokeStyle = "red";
+            ctx.stroke();
+            }
+            }
+            }
+             // Rysowanie i aktualizowanie pozycji kulek
+    for (var i = 0; i < balls.length; i++) {
+        balls[i].draw();
+        balls[i].update();
     }
-
-    // Odbijanie kulek
-    if (ball.x + ball.dx > canvas.width || ball.x + ball.dx < 0) {
-      ball.dx = -ball.dx;
-    }
-    if (ball.y + ball.dy > canvas.height || ball.y + ball.dy < 0) {
-      ball.dy = -ball.dy;
-    }
-    // Aktualizowanie położenia kulek
-    ball.x += ball.dx;
-    ball.y += ball.dy;
-  }
-
-  requestAnimationFrame(animate);
 }
 
-function ballCounter() {
-    ballCounterParagraph.innerHTML = `Aktualna liczba kulek: ${balls.length}`;
-}
-
-function restart() {
-  // Czyszczenie canvas i tablicy z kulkami
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    balls = [];
-
-    numBalls = document.getElementById("numBalls").value;
-    distance = document.getElementById("distance").value;
-    isRunning = false;
-    ballCounter();
-}
-
-canvas.width = 500;
-canvas.height = 500;
-
-document.getElementById("startBtn").addEventListener("click", start);
-document.getElementById("restartBtn").addEventListener("click", restart);
+animate();
