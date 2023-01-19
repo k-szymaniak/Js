@@ -1,17 +1,16 @@
- // Pobieranie canvas
- var canvas = document.getElementById("canvas");
- var ctx = canvas.getContext("2d");
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
 
- // Ustawienie wielkości canvas
+ 
  canvas.width = 800;
  canvas.height = 600;
 
- // Tablica kulek
+
  var balls = [];
  var numBalls = 50;
  var lineLength = 80;
 
- // Klasa kulki
+ 
  class Ball {
      constructor(x, y, vx, vy, radius) {
          this.x = x;
@@ -21,7 +20,7 @@
          this.radius = radius;
      }
 
-     // Rysowanie kulki
+     
      draw() {
          ctx.beginPath();
          ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
@@ -30,7 +29,7 @@
          ctx.closePath();
      }
 
-     // Aktualizowanie pozycji kulki
+     
      update() {
          this.x += this.vx;
          this.y += this.vy;
@@ -45,7 +44,7 @@
      }
  }
 
- // Tworzenie kulek
+ 
  for (var i = 0; i < numBalls; i++) {
      var x = Math.random() * canvas.width;
      var y = Math.random() * canvas.height;
@@ -55,7 +54,7 @@
      balls.push(new Ball(x, y, vx, vy, radius));
  }
 
- // Pętla animacji
+ 
  function animate() {
      requestAnimationFrame(animate);
      ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -73,7 +72,6 @@
             }
             }
             }
-             // Rysowanie i aktualizowanie pozycji kulek
     for (var i = 0; i < balls.length; i++) {
         balls[i].draw();
         balls[i].update();
