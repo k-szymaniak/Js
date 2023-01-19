@@ -1,25 +1,54 @@
 <!DOCTYPE html>
-<html lang="pl">
-
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Drums</title>
-  <link rel="stylesheet" href="css.css">
-  <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
 </head>
-
 <body>
- 
-  <div class="set">
-    <button class="w drum">1</button>
-    <button class="a drum">2</button>
-    <button class="s drum">3</button>
-    <button class="d drum">4</button>
-    <button class="j drum">5</button>
-    <button class="k drum">6</button>
-  </div>
+    <div class="meat">
+        <button id="record">Ścieżka 1</button>
+        <input type="checkbox" id="startRecording" value="1"/>
+        <label for="startRecording">Nagraj</label>
 
+        <input type="checkbox" id="checkPlay" value="1" />
+        <label for="checkPlay">Zaznacz do odtwarzania</label> 
+    </div>
+    <div class="meat">
+        <button id="record">Ścieżka 2</button>
+        <input type="checkbox" id="startRecording" value="2"/>
+        <label for="startRecording">Nagraj</label>
 
-<script src="js.js" charset="utf-8"></script>
-</body>
+        <input type="checkbox" id="checkPlay" value="2" />
+        <label for="checkPlay">Zaznacz do odtwarzania</label> 
+    </div>
+    <div class="meat">
+        <button id="record">Ścieżka 3</button>
+        <input type="checkbox" id="startRecording" value="3"/>
+        <label for="startRecording">Nagraj</label>
+
+        <input type="checkbox" id="checkPlay" value="3" />
+        <label for="checkPlay">Zaznacz do odtwarzania</label> 
+    </div>
+    <div class="meat">
+        <button id="record">Ścieżka 4</button>
+        <input type="checkbox" id="startRecording" value="4"/>
+        <label for="startRecording">Nagraj</label>
+
+        <input type="checkbox" id="checkPlay" value="4" />
+        <label for="checkPlay">Zaznacz do odtwarzania</label> 
+    </div>
+    <div class="buttons">
+        <button id="allChannels">Odtwórz wszystkie tracki</button>
+        <button id="selectedChannels">Odtwórz zaznaczone tracki</button>
+    </div>
+    <audio src="./sounds/1.wav" id="s1"></audio>
+    <audio src="./sounds/2.wav" id="s2"></audio>
+    <audio src="./sounds/3.wav" id="s3"></audio>
+    <audio src="./sounds/4.wav" id="s4"></audio>
+    <audio src="./sounds/5.wav" id="s5"></audio>
+    <audio src="./sounds/6.wav" id="s6"></audio>
+    <script src="js.js"></script>
+</body> 
 </html>

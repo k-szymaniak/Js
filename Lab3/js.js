@@ -1,74 +1,143 @@
-var numberOfDrumButtons = document.querySelectorAll(".drum").length;
+document.addEventListener('keypress', onKeyPress)
 
-for (var i = 0; i < numberOfDrumButtons; i++) {
+let record = document.querySelectorAll("#startRecording");
+const record1 = record[0];
+const record2 = record[1];
+const record3 = record[2];
+const record4 = record[3];
 
-  document.querySelectorAll(".drum")[i].addEventListener("click", function() {
+let recordToPlay = document.querySelectorAll("#checkPlay");
+const recordToPlay1 = recordToPlay[0];
+const recordToPlay2 = recordToPlay[1];
+const recordToPlay3 = recordToPlay[2];
+const recordToPlay4 = recordToPlay[3];
 
-    var buttonInnerHTML = this.innerHTML;
+let allSounds = [];
+let soundArray1 = [];
+let soundArray2 = [];
+let soundArray3 = [];
+let soundArray4 = [];
 
-    makeSound(buttonInnerHTML);
+let customSoundArray = [];
 
-    buttonAnimation(buttonInnerHTML);
+let buttons = document.querySelectorAll(".record");
+const allChannels = document.querySelector('#allChannels');
+const selectedChannels = document.querySelector("#selectedChannels");
 
-  });
+const button1 = buttons[0];
+const button2 = buttons[1];
+const button3 = buttons[2];
+const button4 = buttons[3];
 
-}
-
-document.addEventListener("keypress", function(event) {
-
-  makeSound(event.key);
-
-  buttonAnimation(event.key);
-
+allChannels.addEventListener('click', () => {
+    allSounds.forEach((element, i ) => {
+        setTimeout(() => {
+            playSound(element);
+        }, i * 500);
+    });
 });
 
+function saveCustomSound() {
+    if (recordToPlay1.checked) {
+        customSoundArray = [...soundArray1, ...customSoundArray];
+    }
+    if (recordToPlay2.checked) {
+        customSoundArray = [...soundArray2, ...customSoundArray];
+    }
+    if (recordToPlay3.checked) {
+        customSoundArray = [...soundArray3, ...customSoundArray];
+    }
+    if (recordToPlay4.checked) {
+        customSoundArray = [...soundArray4, ...customSoundArray];
+    };
+}
 
-function makeSound(key) {
+selectedChannels.addEventListener("click", () => {
+    saveCustomSound();
 
-  switch (key) {
-    case "1":
-      var Sound1 = new Audio("Sounds/1.wav");
-      Sound1.play();
-      break;
+    customSoundArray.forEach((element, i) =>  {
+        setTimeout(() => {
+            playSound(element);
+        }, i * 500);
+    });
+});
 
-    case "2":
-      var Sound2 = new Audio("Sounds/2.wav");
-      Sound2.play();
-      break;
+buttons.forEach((element) => {
+    element.addEventListener("click", () => {
+      if (element.className === "record1") {
+        soundArray1.forEach((element, i) => {
+          setTimeout(() => {
+            playSound(element);
+          }, i * 500);
+        });
+      } else if (element.className === "record2") {
+        soundArray2.forEach((element, i) => {
+          setTimeout(() => {
+            playSound(element);
+          }, i * 500);
+        });
+      } else if (element.className === "record3") {
+        soundArray3.forEach((element, i) => {
+          setTimeout(() => {
+            playSound(element);
+          }, i * 500);
+        });
+      } else if (element.className === "record4") {
+        soundArray4.forEach((element, i) => {
+          setTimeout(() => {
+            playSound(element);
+          }, i * 500);
+        });
+      }
+    });
+  });
 
-    case "3":
-      var Sound3 = new Audio('Sounds/3.wav');
-      Sound3.play();
-      break;
-
-    case "4":
-      var Sound4 = new Audio('Sounds/4.wav');
-      Sound4.play();
-      break;
-
-    case "5":
-      var Sound5 = new Audio('Sounds/5.wav');
-      Sound5.play();
-      break;
-
-    case "6":
-      var Sound6 = new Audio('Sounds/6.wav');
-      Sound6.play();
-      break;
-    default: console.log(key);
-
+  function saveSound(key) {
+    allSounds.push(key);
+    if (record1.checked) {
+      soundArray1.push(key);
+    } else if (record2.checked) {
+      soundArray2.push(key);
+    } else if (record3.checked) {
+      soundArray3.push(key);
+    } else {
+      soundArray4.push(key);
+    }
   }
-}
 
-
-function buttonAnimation(currentKey) {
-
-  var activeButton = document.querySelector("." + currentKey);
-
-  activeButton.classList.add("pressed");
-
-  setTimeout(function() {
-    activeButton.classList.remove("pressed");
-  }, 100);
-
-}
+  function onKeyPress(event) {
+    const key = event.key;
+  
+    switch (key) {
+      case "q":
+        playSound("s1");
+        saveSound("s1");
+        break;
+      case "w":
+        playSound("s2");
+        saveSound("s2");
+        break;
+      case "e":
+        playSound("s3");
+        saveSound("s3");
+        break;
+      case "r":
+        playSound("s4");
+        saveSound("s4");
+        break;
+      case "t":
+        playSound("s5");
+        saveSound("s5");
+        break;
+      case "a":
+        playSound("s6");
+        saveSound("s6");
+        break;
+    }
+  }
+  
+  function playSound(sound) {
+    const audioTag = document.querySelector("#" + sound);
+    audioTag.currentTime = 0;
+    audioTag.play();
+  }
