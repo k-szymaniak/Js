@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const header = document.querySelector("#header");
 const record = document.querySelector("#record")
 const canvas = document.querySelector("#table");
@@ -97,3 +98,6 @@ function showRecord() {
   else 
     record.innerHTML = `World record: ${worldRecord/1000.0}sek, Last time: ${lastTime/1000.0}sek`
 }
+=======
+
+>>>>>>> 52623c6406c2dfd1d933805b950283e23df309d6
