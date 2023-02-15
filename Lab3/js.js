@@ -1,143 +1,103 @@
-document.addEventListener('keypress', onKeyPress)
-
-let record = document.querySelectorAll("#startRecording");
-const record1 = record[0];
-const record2 = record[1];
-const record3 = record[2];
-const record4 = record[3];
-
-let recordToPlay = document.querySelectorAll("#checkPlay");
-const recordToPlay1 = recordToPlay[0];
-const recordToPlay2 = recordToPlay[1];
-const recordToPlay3 = recordToPlay[2];
-const recordToPlay4 = recordToPlay[3];
-
-let allSounds = [];
-let soundArray1 = [];
-let soundArray2 = [];
-let soundArray3 = [];
-let soundArray4 = [];
-
-let customSoundArray = [];
-
-let buttons = document.querySelectorAll(".record");
-const allChannels = document.querySelector('#allChannels');
-const selectedChannels = document.querySelector("#selectedChannels");
-
-const button1 = buttons[0];
-const button2 = buttons[1];
-const button3 = buttons[2];
-const button4 = buttons[3];
-
-allChannels.addEventListener('click', () => {
-    allSounds.forEach((element, i ) => {
-        setTimeout(() => {
-            playSound(element);
-        }, i * 500);
-    });
-});
-
-function saveCustomSound() {
-    if (recordToPlay1.checked) {
-        customSoundArray = [...soundArray1, ...customSoundArray];
-    }
-    if (recordToPlay2.checked) {
-        customSoundArray = [...soundArray2, ...customSoundArray];
-    }
-    if (recordToPlay3.checked) {
-        customSoundArray = [...soundArray3, ...customSoundArray];
-    }
-    if (recordToPlay4.checked) {
-        customSoundArray = [...soundArray4, ...customSoundArray];
-    };
+function play(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    if (!audio) return;
+    audio.currentTime = 0;
+    audio.play();
+    key.classList.add('playing');
 }
 
-selectedChannels.addEventListener("click", () => {
-    saveCustomSound();
+function RemoveTransition(e) {
+    if (e.propertyName !== 'transform') return;
+    this.classList.remove('playing');
+}
 
-    customSoundArray.forEach((element, i) =>  {
-        setTimeout(() => {
-            playSound(element);
-        }, i * 500);
-    });
+addEventListener('keydown', play);
+
+const keysAll = document.querySelectorAll('.key');
+keysAll.forEach(key => key.addEventListener('transitionend', RemoveTransition));
+
+const start1 = document.querySelector('#start1');
+const start2 = document.querySelector('#start2');
+const start3 = document.querySelector('#start3');
+const start4 = document.querySelector('#start4');
+
+const starts = [start1, start2, start3, start4];
+starts.forEach(start => {
+    start.addEventListener('click', this.startRecording);
 });
 
-buttons.forEach((element) => {
-    element.addEventListener("click", () => {
-      if (element.className === "record1") {
-        soundArray1.forEach((element, i) => {
-          setTimeout(() => {
-            playSound(element);
-          }, i * 500);
-        });
-      } else if (element.className === "record2") {
-        soundArray2.forEach((element, i) => {
-          setTimeout(() => {
-            playSound(element);
-          }, i * 500);
-        });
-      } else if (element.className === "record3") {
-        soundArray3.forEach((element, i) => {
-          setTimeout(() => {
-            playSound(element);
-          }, i * 500);
-        });
-      } else if (element.className === "record4") {
-        soundArray4.forEach((element, i) => {
-          setTimeout(() => {
-            playSound(element);
-          }, i * 500);
-        });
-      }
-    });
-  });
+const stop1 = document.querySelector('#stop1');
+const stop2 = document.querySelector('#stop2');
+const stop3 = document.querySelector('#stop3');
+const stop4 = document.querySelector('#stop4');
 
-  function saveSound(key) {
-    allSounds.push(key);
-    if (record1.checked) {
-      soundArray1.push(key);
-    } else if (record2.checked) {
-      soundArray2.push(key);
-    } else if (record3.checked) {
-      soundArray3.push(key);
-    } else {
-      soundArray4.push(key);
-    }
-  }
+const stops = [stop1, stop2, stop3, stop4];
+stops.forEach(stop => {
+    stop.addEventListener('click', stopRecording);
+});
 
-  function onKeyPress(event) {
-    const key = event.key;
-  
-    switch (key) {
-      case "q":
-        playSound("s1");
-        saveSound("s1");
-        break;
-      case "w":
-        playSound("s2");
-        saveSound("s2");
-        break;
-      case "e":
-        playSound("s3");
-        saveSound("s3");
-        break;
-      case "r":
-        playSound("s4");
-        saveSound("s4");
-        break;
-      case "t":
-        playSound("s5");
-        saveSound("s5");
-        break;
-      case "a":
-        playSound("s6");
-        saveSound("s6");
-        break;
+const play1 = document.querySelector('#play1');
+const play2 = document.querySelector('#play2');
+const play3 = document.querySelector('#play3');
+const play4 = document.querySelector('#play4');
+
+const plays = [play1, play2, play3, play4];
+
+plays.forEach(play => {
+    play.addEventListener('click', playRecording);
+});
+
+let records = [];
+let startTime;
+let endTime;
+let pressedKeys = [];
+let recording = false;
+
+function startRecording() {
+    startTime = Date.now();
+    recording = true;
+    console.log('started recording');
+}
+
+function stopRecording() {
+    endTime = Date.now();
+    recording = false;
+    console.log('stopped recording');
+}
+
+document.addEventListener('keydown', gathering);
+
+function gathering(e) {
+    if (recording) {
+        let key = e.key;
+        let keyCode = e.keyCode;
+        let keyTime = Date.now();
+        pressedKeys.push({key, keyCode, keyTime});
     }
-  }
-  
-  function playSound(sound) {
-    const audioTag = document.querySelector("#" + sound);
-    audioTag.currentTime = 0;
-    audioTag.play();
-  }
+}
+
+let currentAudio;
+function playRecording() {
+    console.log('playing...');
+    let previousKeyTime = pressedKeys[0].keyTime;
+    let i = 0;
+    function playNext() {
+        if (i >= pressedKeys.length) return;
+        let key = pressedKeys[i];
+        let delay = key.keyTime - previousKeyTime;
+        setTimeout(function() {
+            if(currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            currentAudio = document.querySelector(`audio[data-key="${key.keyCode}"]`);
+            if (!currentAudio) return;
+            currentAudio.play();
+            previousKeyTime = key.keyTime;
+            i++;
+            playNext();
+        }, delay);
+    }
+    playNext();
+}
