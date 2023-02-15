@@ -1,156 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
 
-document.addEventListener('keypress', onKeyPress)
+    <title>Drumkit</title>
+</head>
+<body>
 
-let record = document.querySelectorAll("#startRecording");
-const record1 = record[0];
-const record2 = record[1];
-const record3 = record[2];
-const record4 = record[3];
+    <div id="keys-con">
+        <div data-key="65" class="key">
+            <span class="letter">A</span>
+            <br>
+            <span class="sound">Boom</span>
+        </div>
+        <div data-key="83" class="key">
+            <span class="letter">S</span>
+            <br>
+            <span class="sound">Clap</span>
+        </div>
+        <div data-key="68" class="key"class="letter-con">
+            <span class="letter">D</span>
+            <br>
+            <span class="sound">Hihat</span>
+        </div>
+        <div data-key="70" class="key">
+            <span class="letter">F</span>
+            <br>
+            <span class="sound">Kick</span>
+        </div>
+        <div data-key="71" class="key">
+            <span class="letter">G</span>
+            <br>
+            <span class="sound">Openhat</span>
+        </div>
+        <div data-key="72" class="key">
+            <span class="letter">H</span>
+            <br>
+            <span class="sound">Ride</span>
+        </div>
+        <div data-key="74" class="key">
+            <span class="letter">J</span>
+            <br>
+            <span class="sound">Snare</span>
+        </div>
+        <div data-key="75" class="key">
+            <span class="letter">K</span>
+            <br>
+            <span class="sound">Tink</span>
+        </div>
+        <div data-key="76" class="key">
+            <span class="letter">L</span>
+            <br>
+            <span class="sound">Tom</span>
+        </div>
+    </div>
 
-let recordToPlay = document.querySelectorAll("#checkPlay");
-const recordToPlay1 = recordToPlay[0];
-const recordToPlay2 = recordToPlay[1];
-const recordToPlay3 = recordToPlay[2];
-const recordToPlay4 = recordToPlay[3];
+    <div class="recordings-con">
+        <div class="recording">
+            <div id="start1" class="rec-btn">start</div>
+            <div id="stop1"class="rec-btn">stop</div>
+            <div id="play1"class="rec-btn">odtwórz</div>
+        </div>
+        <div class="recording">
+            <div id="start2" class="rec-btn">start</div>
+            <div id="stop2"class="rec-btn">stop</div>
+            <div id="play2"class="rec-btn">odtwórz</div>
+        </div>
+        <div class="recording">
+            <div id="start3" class="rec-btn">start</div>
+            <div id="stop3"class="rec-btn">stop</div>
+            <div id="play3"class="rec-btn">odtwórz</div>
+        </div>
+        <div class="recording">
+            <div id="start4" class="rec-btn">start</div>
+            <div id="stop4"class="rec-btn">stop</div>
+            <div id="play4"class="rec-btn">odtwórz</div>
+        </div>
+    </div>
 
-let allSounds = [];
-let soundArray1 = [];
-let soundArray2 = [];
-let soundArray3 = [];
-let soundArray4 = [];
+        <audio data-key="65" src="sounds\boom.wav"></audio>
+        <audio data-key="83" src="sounds\clap.wav"></audio>
+        <audio data-key="68" src="sounds\hihat.wav"></audio>
+        <audio data-key="70" src="sounds\kick.wav"></audio>
+        <audio data-key="71" src="sounds\openhat.wav"></audio>
+        <audio data-key="72" src="sounds\ride.wav"></audio>
+        <audio data-key="74" src="sounds\snare.wav"></audio>
+        <audio data-key="75" src="sounds\tink.wav"></audio>
+        <audio data-key="76" src="sounds\tom.wav"></audio>
 
-let customSoundArray = [];
+    <script src="main.js"></script>
 
-let buttons = document.querySelectorAll(".record");
-const allChannels = document.querySelector('#allChannels');
-const selectedChannels = document.querySelector("#selectedChannels");
-
-const button1 = buttons[0];
-const button2 = buttons[1];
-const button3 = buttons[2];
-const button4 = buttons[3];
-
-allChannels.addEventListener('click', () => {
-    allSounds.forEach((element, i ) => {
-        setTimeout(() => {
-            playSound(element);
-        }, i * 500);
-    });
-});
-
-function saveCustomSound() {
-    if (recordToPlay1.checked) {
-        customSoundArray = [...soundArray1, ...customSoundArray];
-    }
-    if (recordToPlay2.checked) {
-        customSoundArray = [...soundArray2, ...customSoundArray];
-    }
-    if (recordToPlay3.checked) {
-        customSoundArray = [...soundArray3, ...customSoundArray];
-    }
-    if (recordToPlay4.checked) {
-        customSoundArray = [...soundArray4, ...customSoundArray];
-    };
-}
-
-selectedChannels.addEventListener("click", () => {
-    saveCustomSound();
-
-    customSoundArray.forEach((element, i) =>  {
-        setTimeout(() => {
-            playSound(element);
-        }, i * 500);
-    });
-});
-
-buttons.forEach((element) => {
-    element.addEventListener("click", () => {
-      if (element.className === "record1") {
-        soundArray1.forEach((element, i) => {
-          setTimeout(() => {
-            playSound(element);
-          }, i * 500);
-        });
-      } else if (element.className === "record2") {
-        soundArray2.forEach((element, i) => {
-          setTimeout(() => {
-            playSound(element);
-          }, i * 500);
-        });
-      } else if (element.className === "record3") {
-        soundArray3.forEach((element, i) => {
-          setTimeout(() => {
-            playSound(element);
-          }, i * 500);
-        });
-      } else if (element.className === "record4") {
-        soundArray4.forEach((element, i) => {
-          setTimeout(() => {
-            playSound(element);
-          }, i * 500);
-        });
-      }
-    });
-  });
-
-  function saveSound(key) {
-    allSounds.push(key);
-    if (record1.checked) {
-      soundArray1.push(key);
-    } else if (record2.checked) {
-      soundArray2.push(key);
-    } else if (record3.checked) {
-      soundArray3.push(key);
-    } else {
-      soundArray4.push(key);
-    }
-  }
-
-  function onKeyPress(event) {
-    const key = event.key;
-  
-    switch (key) {
-      case "q":
-        playSound("s1");
-        saveSound("s1");
-        break;
-      case "w":
-        playSound("s2");
-        saveSound("s2");
-        break;
-      case "e":
-        playSound("s3");
-        saveSound("s3");
-        break;
-      case "r":
-        playSound("s4");
-        saveSound("s4");
-        break;
-      case "t":
-        playSound("s5");
-        saveSound("s5");
-        break;
-      case "a":
-        playSound("s6");
-        saveSound("s6");
-        break;
-      case "s":
-        playSound("s7");
-        saveSound("s7");
-        break;
-      case "d":
-        playSound("s8");
-        saveSound("s8");
-        break;
-      case "f":
-        playSound("s9");
-        saveSound("s9");
-        break;
-    }
-  }
-  
-  function playSound(sound) {
-    const audioTag = document.querySelector("#" + sound);
-    audioTag.currentTime = 0;
-    audioTag.play();
-  }
+</body>
+</html>
